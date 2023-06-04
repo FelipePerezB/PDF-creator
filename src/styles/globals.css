@@ -1,5 +1,6 @@
-body *{
+body{
   font-family: 'Nunito', monospace;
+  font-size: 9px;
 }
 
 *{
