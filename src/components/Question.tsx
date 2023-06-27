@@ -10,7 +10,7 @@ export default function Question({
 }: {
   number: number;
   question: string;
-  alternatives: (string | number)[];
+  alternatives: (string);
   children?: ReactElement
 }) {
   return (
@@ -20,7 +20,7 @@ export default function Question({
       </p>
       <div className={styles['separator-center']}>
         <ol className={styles["question__alternatives"]}>
-          {alternatives.map((alternative, i) => {
+          {alternatives.split(",").map((alternative, i) => {
             const letter = {
               0: "A",
               1: "B",

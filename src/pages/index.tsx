@@ -1,66 +1,68 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import jsPDF from "jspdf";
-import { useEffect, useRef, useState } from "react";
 import ReportTemplate from "./reportTemplate";
-// import html2pdf from 'html2pdf.js';
-const inter = Inter({ subsets: ["latin"] });
+import Doc from "@/containers/Doc";
+import { useEffect } from "react";
+// import html2pdf from "html2pdf.js";
 
 export default function Home() {
-  const reportTemplateRef = useRef(null) as any;
-  const [frame, setFrame] = useState();
+  useEffect(() => {
+    const $doc = document.getElementById("doc");
+    const $container = document.querySelector("#doc-container");
+    if ($container && $doc) {
+      const pixels = 13
+      const docWidth = 450
+      const ratio = pixels / docWidth
+      let componentWith
 
-  // const img = new Image()
+      if($container?.clientWidth <= 425){
+        componentWith = $container?.clientWidth *  .95
+      } else if($container?.clientWidth <= 1024){
+        componentWith = $container?.clientWidth *  0.7
+      } else {
+        componentWith = 700
+      }
+      //  else if($container?.clientWidth <= 768){
+      //   mediaQuery = 0.9
+      // } 
+
+      // const componentWith = $container?.clientWidth * mediaQuery;
+      $doc.style.width = componentWith + "px";
+      $doc.style.fontSize = (componentWith * ratio) + "px";
+    }
+  }, []);
 
   const handleGeneratePdf = async () => {
-    // const doc = new jsPDF({
-    //   format: "a4",
-    //   unit: "px",
-    // });
-
-    // const img = document.createElement('img');
-    // img.src = "/pudin.png";
-    // const canvas = document.getElementById("chart-1") as HTMLCanvasElement;
-    // const ctx = canvas.getContext("2d");
-
-    // ctx?.drawImage(img, 0, 0);
-    // const imageData = canvas.toDataURL("image/png");
-
-    // const { x, y, height, width } = canvas.getBoundingClientRect();
-    // doc.addImage(imageData, "PNG", x, y, x + width, y + height);
-
-    // // Adding the fonts.
-    // doc.addFont("/Static/Nunito-Regular.ttf", "Nunito", "normal");
-    // doc.addFont("/Static/Nunito-Bold.ttf", "Nunito", "bold");
-    // doc.addFont("/Static/Nunito-ExtraBold.ttf", "Nunito", "bolditalic");
-    // doc.setFont("Nunito", "normal");
-
-  //   doc.html(reportTemplateRef.current, {
-  //     async callback(doc) {
-        // setFrame(doc.output("bloburl") as any);
-  //       console.log(doc.getFontList());
-  //     },
-  //   });
-  // const $doc = document.getElementById('doc')
-  // const pdf = new html2pdf()
-  //   .set({
-  //     filename: 'Sistema de ecuaciones.pdf',
-  //     html2canvas: {
-  //       scale: 4, // A mayor escala, mejores gráficos, pero más peso
-  //       letterRendering: true,
-  //   },
-  //     jsPDF: {
-  //       unit: 'px',
-  //       format: 'a4',
-  //     }
-  //   })
-  //   .from($doc);
-  // console.log(await pdf)
-  // await pdf.save()
-  // console.log(pdf)
+    const $doc = document.getElementById("doc");
+    if ($doc) {
+      $doc.style.width = "450px";
+      $doc.style.fontSize = "13px";
+      $doc.style.gap = "0";
+      // const pdf = new html2pdf()
+      //   .set({
+      //     filename: "Sistema de ecuaciones.pdf",
+      //     html2canvas: {
+      //       scale: 4, // A mayor escala, mejores gráficos, pero más peso
+      //       letterRendering: true,
+      //     },
+      //     jsPDF: {
+      //       unit: "px",
+      //       format: "a4",
+      //     },
+      //   })
+      //   .from($doc);
+      // await pdf.save();
+      const $container = document.querySelector("#doc-container");
+      if ($container && $doc) {
+        const pixels = 13
+        const docWidth = 450
+        const ratio = pixels / docWidth
+  
+        const componentWith = $container?.clientWidth * 0.9;
+        $doc.style.width = componentWith + "px";
+        $doc.style.fontSize = (componentWith * ratio) + "px";
+        $doc.style.gap = "1.4em";
+      }
+    }
   };
 
   return (
@@ -68,10 +70,8 @@ export default function Home() {
       <button className={styles.button} onClick={handleGeneratePdf}>
         Generate PDF
       </button>
-      <div className={styles.docs}>
-        <div ref={reportTemplateRef}>
-          <ReportTemplate />
-        </div>
+      <div id="doc-container" className={styles.docs}>
+        <Doc />
       </div>
     </main>
   );

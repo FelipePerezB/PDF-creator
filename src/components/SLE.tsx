@@ -1,31 +1,46 @@
 import React from "react";
+import CustomComponent from "./CustomComponent";
 
-export default function SLE({ ec1, ec2 }: { ec1: string; ec2: string }) {
+export default function SLE({
+  ec1,
+  ec2,
+  id,
+}: {
+  ec1: string;
+  ec2: string;
+  id: string;
+}) {
   const styles: any = {
     SLE: {
-      fontSize: "0.8rem",
-      width: "max-content",
-      height: "max-content",
-      margin: "8px auto",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      borderRight: " 2px solid black",
-      borderBottom: "2px solid black",
-      padding: "0 8px 4px",
-      borderEndEndRadius: "4px",
+      borderRight: "0.15em solid black",
+      borderBottom: "0.15em solid black",
+      padding: "0 0.3em 0.2em",
+      borderEndEndRadius: "0.3em",
     },
     ecuation: {
-      fontSize: "11px",
+      fontSize: "1em",
       display: "inlineBlock",
       width: "max-content",
     },
   };
 
   return (
-    <div style={styles.SLE}>
-      <span style={styles.ecuation}>{ec1}</span>
-      <span style={styles.ecuation}>{ec2}</span>
-    </div>
+    <CustomComponent
+      active={false}
+      id={id}
+      style={{
+        width: "max-content",
+        height: "max-content",
+        margin: "0.4em auto",
+      }}
+    >
+      <div style={styles.SLE}>
+        <span style={styles.ecuation}>{ec1}</span>
+        <span style={styles.ecuation}>{ec2}</span>
+      </div>
+    </CustomComponent>
   );
 }

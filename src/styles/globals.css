@@ -1,8 +1,9 @@
 body{
   font-family: 'Nunito', monospace;
-  font-size: 9px;
+  /* font-size: 140px; */
 }
 
 *{
   box-sizing: border-box;
 }
+

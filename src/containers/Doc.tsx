@@ -1,124 +1,184 @@
-import React, { ReactElement } from "react";
-import styles from "../styles/reportTemplate.module.css";
+import React, { useEffect, useState } from "react";
 import Page from "./Page";
-import Title from "@/components/Title";
-import Columns from "./Columns";
 import getComponent from "@/utils/getComponent";
-import DocInfo from "@/components/DocInfo";
+import styles from "../styles/Doc.module.css";
+import Menu from "@/components/Menu";
+import { isCID } from "@/utils/getId";
+
+type props = { type: string; options: any };
 
 export default function Doc() {
-  const pages = [
+  const [modalData, setModalData] = useState<any>();
+  const [modalType, setModalType] = useState<"add" | "edit" | "">("");
+  const [lastElement, setlastElement] = useState<any>();
+  const [pages, setPage] = useState([
     [
       {
-        type: "title",
+        type: "docInfo",
         options: {
-          text: "REPRESENTACIÓN",
-          size: "h2",
-        },
-      },
-      {
-        type: "paragraph",
-        options: {
-          text: "Un sistema de ecuaciones es un conjunto de dos o más ecuaciones que se resuelven al mismo tiempo para encontrar los valores desconocidos.",
-        },
-      },
-      {
-        type: "columns",
-        options: {
-          childrens: [
-            {
-              type: "lineChart",
-              options: {
-                ecuations: [{}, { m: -1, n: 4 }],
-              },
-            },
-            {
-              type: "div",
-              options: {
-                childrens: [
-                  {
-                    type: "paragraph",
-                    options: {
-                      text: "Por ejemplo, en el sistema de ecuaciones:",
-                    },
-                  },
-                  {
-                    type: "SLE",
-                    options: {
-                      ec1: "x - y = 0",
-                      ec2: "x + y = 4",
-                    },
-                  },
-                  {
-                    type: "paragraph",
-                    options: {
-                      text: "La solución se encontará en la intersección entre ambas ecuaciones, en este caso, en el punto (2, 2).",
-                    },
-                  },
-                  {
-                    type: "SLE",
-                    options: {
-                      ec1: "2 - 2 = 0",
-                      ec2: "2 + 2 = 4",
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      },
-      {
-        type: "exercises",
-        options: {
-          questions: [
-            {
-              question:
-                "Si 2 rectas intersectan en el punto (4, 5), ¿cúal es la solución a su sistema de ecuaciones?",
-              alternatives: ["(4, 5)", "(5, 4)", "(2, 2)", "No tiene solución"],
-            },
-            {
-              question:
-                "¿Cuantas soluciones tiene el siguiente sistema de ecuaciones?",
-              alternatives: [0, 1, 2, "Infinitas"],
-              children: {
-                type: "lineChart",
-                options: {
-                  size: "small",
-                  ecuations: [{}, { n: 2 }],
-                },
-              },
-              // <LineChart
-              //   size="small"
-              //   ecuations={[
-              //     {
-              //       m: 1,
-              //       n: 0,
-              //     },
-              //     {
-              //       m: 1,
-              //       n: 2,
-              //     },
-              //   ]}
-              // />
-              // ),
-            },
-          ],
+          id: "CID812819282",
+          title: "SISTEMA DE ECUACIONES",
+          subtitle: "EJE: ALGEBRA",
         },
       },
     ],
-  ];
-  // const doc =
+  ] as any[]);
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const getNode = (selection?: HTMLElement): HTMLElement | undefined =>
+    selection &&
+    (isCID(selection?.id)
+      ? selection
+      : getNode(selection.parentElement as HTMLElement));
+
+  const getLowLvlComp = (JSONComponent: props, expectedID: string) => {
+    let component;
+    if (JSONComponent.options?.id === expectedID) {
+      return JSONComponent;
+    }
+    JSONComponent.options?.childrens?.forEach((e: props) => {
+      const lowLvlCompo = getLowLvlComp(e, expectedID);
+      if (lowLvlCompo) {
+        component = lowLvlCompo;
+      }
+    });
+    return component;
+  };
+
+  const getJSONComponent = (
+    page: any[],
+    node: HTMLElement
+  ): props | undefined => {
+    let component;
+    page.find((JSONComponent: props) => {
+      const lowLvlComp = getLowLvlComp(JSONComponent, node.id);
+      if (lowLvlComp) {
+        component = lowLvlComp;
+      }
+    });
+    return component;
+  };
+
+  const changeComponent = (component: props, data: props): any => {
+    if (component.options?.id === data.options?.id) {
+      component.options = data.options;
+    } else {
+      component?.options?.childrens?.forEach((child: props) => {
+        if (child?.options?.id === data.options?.id) {
+          child.options = data.options;
+          return;
+        } else changeComponent(child, data) as props;
+      });
+    }
+  };
+
+  const getCoords = (event: React.MouseEvent<HTMLDivElement>) => {
+    const selection = event?.target as any;
+    if (selection) {
+      const id = selection?.id as string;
+      if (id.startsWith("page-")) {
+        setPageNumber(Number(id.replace("page-", "")));
+      }
+    }
+    const node = getNode(selection);
+    let component;
+
+    component = node && getJSONComponent(pages[pageNumber], node);
+    setMenuConfig({
+      coords: {
+        y: event.pageY,
+        x: event.clientX,
+      },
+      component,
+    });
+  };
+
+  useEffect(() => {
+    if (
+      lastElement?.options?.id !== modalData?.options?.id ||
+      modalType === "edit"
+    ) {
+      setlastElement(modalData);
+      if (modalType === "add") {
+        pages[pageNumber] = [...pages[pageNumber], modalData];
+      } else if (modalType === "edit" && modalData) {
+        pages[pageNumber].forEach((element: props) => {
+          changeComponent(element, modalData);
+        });
+      }
+      setModalData("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modalData, lastElement, modalType]);
+  type JSONComp = {
+    options: {
+      id: string;
+    };
+    type: string;
+  };
+
+  const deleteComponentCB = (component: JSONComp) => {
+    pages[pageNumber] = pages[pageNumber].filter(
+      (element: JSONComp) => element?.options?.id !== component?.options?.id
+    );
+    setPage([...pages]);
+  };
+
+  const [menuConfig, setMenuConfig] = useState(
+    {} as {
+      coords: {
+        x: number;
+        y: number;
+      };
+      component?: any;
+    }
+  );
+
   return (
-    <div>
-      {pages.map((page, i) => (
-        <Page key={"page-" + i}>
-          <>
-          {i===0 && <DocInfo/>}
-          {page.map(({ type, options }) => getComponent(type, options))}
-          </>
-        </Page>
-      ))}
-    </div>
+    <>
+      {menuConfig && (
+        <Menu
+          deleteComponentCB={deleteComponentCB}
+          setModalType={setModalType}
+          setModalData={setModalData}
+          {...menuConfig}
+        />
+      )}
+      <div className={styles.doc} onClick={getCoords} id="doc">
+        {pages.map((page, i) => (
+          <Page index={i} key={"page-" + i}>
+            <>
+              {page?.map(({ type, options }: any) =>
+                getComponent(type, options)
+              )}
+            </>
+          </Page>
+        ))}
+        <div>
+          <button
+            onClick={() => {
+              setPage([...pages, []]);
+            }}
+          >
+            Añadir página
+          </button>
+          <button
+            onClick={() => {
+              pages.pop();
+              setPage([...pages]);
+            }}
+          >
+            Eliminar página
+          </button>
+          <button
+            onClick={() => {
+              localStorage.setItem("Doc", JSON.stringify(pages));
+            }}
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </>
   );
 }

@@ -1,11 +1,21 @@
-.docs{
-  font-family: nunito;
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  min-height: 100vh;
-}
-
 .frame{
   width: 500px;
+}
+.component:hover{
+  cursor: pointer;
+  outline: 0.11em solid #5066e8;
+  border-radius: 0.1em;
+}
+.component .component:hover{
+  outline: 0.15em dashed #5066e8;
+}
+.component .component .component:hover{
+  outline: 0.15em solid #5066e8;
+}
+
+
+.docs{
+  display: flex;
+  justify-content: center;
+  /* width: 120vw; */
 }

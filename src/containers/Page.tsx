@@ -1,15 +1,22 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { ReactElement, ReactNode } from "react";
 import styles from "../styles/reportTemplate.module.css";
-import DocInfo from '@/components/DocInfo';
+import DocInfo from "@/components/DocInfo";
 
-export default function Page({isFirstPage, children}: {
-  isFirstPage?: boolean;
-  children: ReactElement
+export default function Page({
+  children,
+  index,
+}: {
+  index: number;
+  children: ReactElement;
 }) {
   return (
-    <div className={styles.page}>
-      {isFirstPage && <DocInfo/>}
+    <div
+      style={{ display: "flex", flexDirection: "column" }}
+      id={"page-" + index}
+      className={styles.page}
+    >
+      {/* {isFirstPage && <DocInfo/>} */}
       {children}
     </div>
-  )
+  );
 }

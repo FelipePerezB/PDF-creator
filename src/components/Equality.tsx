@@ -1,40 +1,53 @@
+import getComponent from "@/utils/getComponent";
 import React from "react";
+import CustomComponent from "./CustomComponent";
 
 export default function Equality({
   exception,
   withBorder = false,
-  values,
+  childrens,
   sign,
+  id,
 }: {
-  exception?:{
-    sign: string,
-    index: number
-  }
+  exception?: {
+    sign: string;
+    index: number;
+  };
   withBorder?: boolean;
-  values: any[];
+  childrens: {
+    type: string;
+    options: any;
+  }[];
   sign: string;
+  id: string;
 }) {
   const styles = {
     equality: {
       border: withBorder ? "1px solid black" : "none",
       borderRadius: "2px",
       padding: withBorder ? "6px" : "0",
-      "justify-content": "center",
+      justifyContent: "center",
       fontSize: "12px",
       display: "flex",
-      "align-items": "center",
+      alignItems: "center",
       gap: "8px",
     },
   };
   return (
-    <div style={styles.equality}>
-      {values.map((element, i) => (
-        <>
-          <span key={element + "text"}>{element}</span>
-          {exception?.index !== i && i + 1 < values.length && <span key={element + "sign"}>{sign}</span>}
-          {exception?.index === i && <span key={element + "sign"}>{exception.sign}</span>}
-        </>
-      ))}
-    </div>
+    <CustomComponent active={false} id={id} style={{}}>
+      <div style={styles.equality}>
+        {childrens.map(({ type, options }, i) => (
+          <>
+            <span key={type + "text"}>{getComponent(type, options)}</span>
+            {exception?.index != i && i + 1 < childrens.length && (
+              <span key={type + "sign"}>{sign}</span>
+            )}
+            {exception?.index == i && (
+              <span key={type + "sign"}>{exception.sign}</span>
+            )}
+          </>
+        ))}
+      </div>
+    </CustomComponent>
   );
 }

@@ -9,6 +9,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import styles from "../styles/reportTemplate.module.css";
+import CustomComponent from "./CustomComponent";
 
 const getCoords = (m: number = 1, n: number = 0) => {
   let coords = [];
@@ -22,6 +23,7 @@ export default function LineChart({
   size = "medium",
   ecuations,
   datasets,
+  id,
 }: {
   ecuations?: {
     n?: number;
@@ -32,6 +34,7 @@ export default function LineChart({
     coords: (string | number)[][];
     label: string;
   }[];
+  id: string;
 }) {
   ChartJS.register(
     CategoryScale,
@@ -41,74 +44,81 @@ export default function LineChart({
     Tooltip
   );
 
+  let borderWidth = 2.4;
+  if (size === "small") {
+    borderWidth = 1.5;
+  }
+
   const chartData = {
-    datasets: datasets
-      ? datasets.map(({ coords, label }, i) => ({
-          label: label,
-          data: coords.map((coord) => ({
-            x: coord[0],
-            y: coord[1],
-          })),
-          backgroundColor: "black",
-          borderColor: "black",
-          borderWidth: 1.6,
-          pointRadius: 1.5,
-          // borderDash: [30, i * 5],
-        }))
-      : ecuations?.map(({ m, n }, i) => ({
-          label: `${m || ""}x + ${n || "0"} = y`,
-          data: getCoords(m as number, n as number).map((coord) => ({
-            x: coord[0],
-            y: coord[1],
-          })),
-          backgroundColor: "black",
-          borderColor: "black",
-          borderWidth: 1.6,
-          pointRadius: 1.5,
-          // borderDash: [30, i * 5],
-        })),
+    // datasets: datasets
+    //   ? datasets.map(({ coords, label }, i) => ({
+    //       label: label,
+    //       data: coords.map((coord) => ({
+    //         x: coord[0],
+    //         y: coord[1],
+    //       })),
+    //       backgroundColor: "black",
+    //       borderColor: "black",
+    //       borderWidth: borderWidth,
+    //       pointRadius: 0.8,
+    //       // borderDash: [30, i * 5],
+    //     }))
+    datasets: ecuations?.map(({ m, n }, i) => ({
+      label: `${m || ""}x + ${n || "0"} = y`,
+      data: getCoords(m as number, n as number).map((coord) => ({
+        x: coord[0],
+        y: coord[1],
+      })),
+      backgroundColor: "black",
+      borderColor: "black",
+      borderWidth: borderWidth,
+      pointRadius: 0.8,
+      // borderDash: [30, i * 5],
+    })),
     //  getCoords(ecuation?.m as number, ecuation?.n as number),
     //     backgroundColor: "#676767",
   };
   return (
-    <div className={styles[`${size}-chart`]}>
-      <Line
-        data={chartData as any}
-        className={styles.chart}
-        options={{
-          aspectRatio: 1,
-          devicePixelRatio: 3,
-          scales: {
-            x: {
-              ticks: {
-                color: "black",
-                font: {
-                  size: 10,
+    <CustomComponent active={false} id={id} style={{width: "max-content"}}>
+      <div className={styles[`${size}-chart`]}>
+        <Line
+          data={chartData as any}
+          className={styles.chart}
+          options={{
+            aspectRatio: 1,
+            devicePixelRatio: 3,
+            scales: {
+              x: {
+                ticks: {
+                  color: "black",
+                  font: {
+                    size: 10,
+                  },
+                },
+                grid: { display: false },
+                border: {
+                  width: borderWidth,
+                  color: "black",
                 },
               },
-              grid: { display: false },
-              border: {
-                width: 2,
-                color: "black",
-              },
-            },
-            y: {
-              ticks: {
-                stepSize: 1,
-                color: "black",
-                font: {
-                  size: 10,
+              y: {
+                ticks: {
+                  stepSize: 1,
+                  color: "black",
+                  font: {
+                    size: 10,
+                  },
                 },
+                border: {
+                  width: borderWidth,
+                  color: "black",
+                },
+                grid: { display: false },
               },
-              border: {
-                width: 2,
-                color: "black",
-              },
-              grid: { display: false },
             },
-          },
-        }}
-      />
-    </div>
+          }}
+        />
+      </div>
+    </CustomComponent>
   );
 }
