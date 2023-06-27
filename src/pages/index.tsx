@@ -1,5 +1,4 @@
 import styles from "@/styles/Home.module.css";
-import ReportTemplate from "./reportTemplate";
 import Doc from "@/containers/Doc";
 import { useEffect } from "react";
 // import html2pdf from "html2pdf.js";
