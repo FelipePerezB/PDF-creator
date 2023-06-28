@@ -28,6 +28,26 @@ export default function ModalInput({
   type: string | any;
   addFormData: (data: any) => void;
 }) {
+  const Child = ({
+    options,
+    type,
+    deleteChildCb,
+  }: {
+    options: {
+      id: string;
+    };
+    type: string;
+    deleteChildCb?: (id: string) => void;
+  }) => (
+    <div className={styles.child} key={options?.id}>
+      <span>{capFirst(type)}</span>
+      <span>{options?.id}</span>
+      {deleteChildCb && (
+        <span onClick={() => deleteChildCb(options?.id)}>-</span>
+      )}
+    </div>
+  );
+
   const createFormData = (value: any) => {
     const data: any = {};
     data[name] = value;
@@ -35,6 +55,11 @@ export default function ModalInput({
   };
 
   if (value) createFormData(value);
+
+  const capFirst = (text: string) => {
+    const [first, ...other] = text.split("");
+    return first[0].toLocaleUpperCase() + other.join("");
+  };
 
   const StandardInput = ({ name, type }: props) => (
     <input
@@ -73,6 +98,12 @@ export default function ModalInput({
     const [lastChild, setLastChild] = useState<component>();
     const [children, setChildren] = useState<component[]>(defaultValue);
 
+    const deleteChild = (id: string) => {
+      const index = children.findIndex((comp) => comp?.options?.id === id);
+      children.splice(index, 1);
+      setChildren([...children]);
+    };
+
     useEffect(() => {
       if (modalData && lastChild?.options?.id !== modalData?.options?.id) {
         setLastChild(modalData);
@@ -86,25 +117,21 @@ export default function ModalInput({
 
     return (
       <>
-        <article className={styles["child-input"]}>
-          <section>
-            <div className={styles["child-input__children"]}>
-              {children?.map(({ type, options }) => (
-                <div className={styles.child} key={options?.id}>
-                  <span>{type}</span>
-                  <span>{options?.id}</span>
-                  <div>
-                    <span>-</span>
-                    <span>Ed</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button type="button" className={styles["children-input__add"]}>
-              <span onClick={() => setModalState(true)}>Añadir hijo</span>
-            </button>
-          </section>
-        </article>
+        {children[0] && (
+          <div className={styles["children"]}>
+            {children?.map(({ type, options }) => (
+              <Child
+                options={options}
+                deleteChildCb={deleteChild}
+                type={type}
+                key={options.id}
+              />
+            ))}
+          </div>
+        )}
+        <button type="button" className={styles["children-input__add"]}>
+          <span onClick={() => setModalState(true)}>Añadir hijo</span>
+        </button>
         <Modal
           modalState={modalState}
           setModalState={setModalState}
@@ -127,24 +154,17 @@ export default function ModalInput({
     return (
       <>
         <article className={styles["child-input"]}>
-          <section>
-            <div className={styles["child-input__children"]}>
-              {modalData && (
-                <div className={styles.child} key={modalData.options?.id}>
-                  <span>{modalData.type}</span>
-                  <span>{modalData.options?.id}</span>
-                  <div>
-                    <span>-</span>
-                    <span>Ed</span>
-                  </div>
-                </div>
-              )}
-            </div>
-            <button type="button" className={styles["children-input__add"]}>
-              <span onClick={() => setModalState(true)}>Añadir hijo</span>
-            </button>
-          </section>
+          {modalData && (
+            <Child
+              options={modalData.options}
+              type={modalData.type}
+              key={modalData.options?.id}
+            />
+          )}
         </article>
+        <button type="button" className={styles["children-input__add"]}>
+          <span onClick={() => setModalState(true)}>Añadir hijo</span>
+        </button>
         <Modal
           modalState={modalState}
           setModalState={setModalState}
@@ -208,7 +228,7 @@ export default function ModalInput({
     }, [elements]);
 
     return (
-      <>
+      <div className={styles.subInput}>
         <div>
           {inputs.map(([name, type]) => (
             <ModalInput
@@ -219,18 +239,22 @@ export default function ModalInput({
             />
           ))}
         </div>
-        <div>
+        <div className={styles.cards}>
           {elements?.map((element) => {
             const props = Object.entries(element) as any;
-            return props?.map(([key, value]: string[]) => {
-              return (
-                <div key={value + key}>
-                  <span>
-                    {key}: {value}
-                  </span>
-                </div>
-              );
-            });
+            return (
+              <div key={props[0]} className={styles.card}>
+                {props?.map(([key, value]: string[]) => {
+                  return (
+                    <div key={value + key}>
+                      <span className={styles.a}>
+                        {capFirst(key)}: {value}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
           })}
         </div>
         <button
@@ -241,8 +265,7 @@ export default function ModalInput({
         >
           Añadir
         </button>
-        <button type="button">Eliminar</button>
-      </>
+      </div>
     );
   };
 
@@ -272,7 +295,7 @@ export default function ModalInput({
 
   return (
     <label htmlFor={name} key={name}>
-      <span>{name}</span>
+      <span>{capFirst(name)}:</span>
       {getInput()}
     </label>
   );

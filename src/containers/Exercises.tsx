@@ -8,7 +8,7 @@ import CustomComponent from "@/components/CustomComponent";
 export default function Exercises({
   id,
   questions,
-  startsIn = "1",
+  startsIn,
   isAnEvaluation = false,
 }: {
   isAnEvaluation?: boolean;
@@ -23,14 +23,16 @@ export default function Exercises({
   }[];
   id: string;
 }) {
+  const startNumber = startsIn ?? "1"
   return (
     <CustomComponent active={false} id={id} style={{}}>
       <section className={styles.exercises}>
-        {!isAnEvaluation && startsIn === "1" && (
-          <Title text="PÁCTICA" size="h2" />
+        {!isAnEvaluation && startNumber === "1" && (
+          // <Title text="PÁCTICA" size="h2" />
+          <h1 className={styles.subtitle}>{"PRÁCTICA"}</h1>
         )}
         {questions.map(({ question, alternatives, children }, i) => {
-          const num = i + 1 + (Number(startsIn) - 1);
+          const num = i + 1 + (Number(startNumber) - 1);
           return (
             <Question
               key={`question-${num}-${question.substring(10)}}`}

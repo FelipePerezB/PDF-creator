@@ -30,15 +30,16 @@ export default function Modal({
     const $selectComponent = document.getElementById(
       "select-component"
     ) as HTMLInputElement;
-    $selectComponent.value = ""
+    $selectComponent.value = "";
     setModalState(false);
-    setComponentSchema("")
+    setComponentSchema("");
   };
 
   const addFormData = (data: any) => {
     const key = Object.keys(data)[0];
     const value = Object.values(data)[0];
     values[key] = value;
+    console.log(values);
     setValues(values);
   };
 
@@ -84,39 +85,42 @@ export default function Modal({
     return createPortal(
       <>
         <div onClick={() => setModalState(false)} className={styles.blur}></div>
-        <div className={styles.container}>
-          <label>
-            <input
-              className={styles.select}
-              id="select-component"
-              defaultValue={selectedComponent?.type}
-              onChange={(event) => {
-                const value = event?.target?.value;
-                if (componentsNames.includes(value)) setComponent(value);
-              }}
-              list="components"
-            />
-          </label>
-          <datalist id="components">
-            {componentsNames.map((component) => (
-              <option key={component} value={component}>
-                {component}
-              </option>
-            ))}
-          </datalist>
-          <form className={styles.form}>
-            {currentSchema &&
-              Object.entries(currentSchema).map(([name, type], i) => {
-                return (
-                  <ModalInput
-                    addFormData={addFormData}
-                    name={name}
-                    key={name}
-                    type={type as any}
-                    value={componentSchema && componentSchema[i + 1]}
-                  />
-                );
-              })}
+        <div className={styles.modal}>
+          <div className={styles.container}>
+            <label>
+              <span>Tipo de componente:</span>
+              <input
+                className={styles.select}
+                id="select-component"
+                defaultValue={selectedComponent?.type}
+                onChange={(event) => {
+                  const value = event?.target?.value;
+                  if (componentsNames.includes(value)) setComponent(value);
+                }}
+                list="components"
+              />
+            </label>
+            <datalist id="components">
+              {componentsNames.map((component) => (
+                <option key={component} value={component}>
+                  {component}
+                </option>
+              ))}
+            </datalist>
+            <form className={styles.form}>
+              {currentSchema &&
+                Object.entries(currentSchema).map(([name, type], i) => {
+                  return (
+                    <ModalInput
+                      addFormData={addFormData}
+                      name={name}
+                      key={name}
+                      type={type as any}
+                      value={componentSchema && componentSchema[i + 1]}
+                    />
+                  );
+                })}
+            </form>
             <button
               type="button"
               onClick={() => {
@@ -125,7 +129,7 @@ export default function Modal({
             >
               Guardar
             </button>
-          </form>
+          </div>
         </div>
       </>,
       document.querySelector("#modal") as HTMLDivElement

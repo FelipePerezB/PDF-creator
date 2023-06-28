@@ -17,5 +17,7 @@
 .docs{
   display: flex;
   justify-content: center;
+  padding: 8px 0;
+
   /* width: 120vw; */
 }

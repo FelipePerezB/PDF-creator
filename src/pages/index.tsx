@@ -66,9 +66,9 @@ export default function Home() {
 
   return (
     <main>
-      <button className={styles.button} onClick={handleGeneratePdf}>
+      {/* <button className={styles.button} onClick={handleGeneratePdf}>
         Generate PDF
-      </button>
+      </button> */}
       <div id="doc-container" className={styles.docs}>
         <Doc />
       </div>
