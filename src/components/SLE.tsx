@@ -21,7 +21,7 @@ export default function SLE({
       borderEndEndRadius: "0.3em",
     },
     ecuation: {
-      fontSize: "1em",
+      fontSize: "0.85em",
       display: "inlineBlock",
       width: "max-content",
     },

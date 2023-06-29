@@ -4,13 +4,17 @@ import getComponent from "@/utils/getComponent";
 import styles from "../styles/Doc.module.css";
 import Menu from "@/components/Menu";
 import { isCID } from "@/utils/getId";
+import changeComponent from "@/utils/chnangeComponent";
 
 type props = { type: string; options: any };
 
 export default function Doc() {
   const [modalData, setModalData] = useState<any>();
-  const [modalType, setModalType] = useState<"add" | "edit" | "">("");
+  const [modalType, setModalType] = useState<"add" | "edit" | "" | "addChild">(
+    ""
+  );
   const [lastElement, setlastElement] = useState<any>();
+  const [componente, setComponent] = useState<any>();
   const [pages, setPage] = useState([
     [
       {
@@ -19,6 +23,46 @@ export default function Doc() {
           id: "CID812819282",
           title: "SISTEMA DE ECUACIONES",
           subtitle: "EJE: ALGEBRA",
+        },
+      },
+      {
+        type: "columns",
+        options: {
+          id: "CID796888864",
+          childrens: [
+            {
+              type: "SLE",
+              options: {
+                id: "CID742029431",
+                ec1: "2x + 3y = 10",
+                ec2: "2x + 5y = 8",
+              },
+            },
+            {
+              type: "div",
+              options: {
+                id: "CID657426618",
+                childrens: [
+                  {
+                    type: "title",
+                    options: {
+                      id: "CID701799743",
+                      text: "AAAA",
+                      size: "h1",
+                    },
+                  },
+                  {
+                    type: "SLE",
+                    options: {
+                      id: "CID164118545",
+                      ec1: "2x + 3y = 10",
+                      ec2: "2x + 5y = 8",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
         },
       },
     ],
@@ -59,19 +103,6 @@ export default function Doc() {
     return component;
   };
 
-  const changeComponent = (component: props, data: props): any => {
-    if (component.options?.id === data.options?.id) {
-      component.options = data.options;
-    } else {
-      component?.options?.childrens?.forEach((child: props) => {
-        if (child?.options?.id === data.options?.id) {
-          child.options = data.options;
-          return;
-        } else changeComponent(child, data) as props;
-      });
-    }
-  };
-
   const getCoords = (event: React.MouseEvent<HTMLDivElement>) => {
     const selection = event?.target as any;
     if (selection) {
@@ -81,10 +112,13 @@ export default function Doc() {
       }
     }
     const node = getNode(selection);
-    let component;
+    let component: props;
 
-    component = node && getJSONComponent(pages[pageNumber], node);
+    component = node && (getJSONComponent(pages[pageNumber], node) as any);
+    setComponent(component);
+
     setMenuConfig({
+      pages: pages,
       coords: {
         y: event.pageY,
         x: event.clientX,
@@ -105,6 +139,10 @@ export default function Doc() {
         pages[pageNumber].forEach((element: props) => {
           changeComponent(element, modalData);
         });
+      } else if (modalType === "addChild") {
+        pages[pageNumber].forEach((element: props) => {
+          changeComponent(element, componente, { newChild: modalData });
+        });
       }
       setModalData("");
     }
@@ -118,14 +156,22 @@ export default function Doc() {
   };
 
   const deleteComponentCB = (component: JSONComp) => {
-    pages[pageNumber] = pages[pageNumber].filter(
-      (element: JSONComp) => element?.options?.id !== component?.options?.id
+    const index = pages[pageNumber].findIndex(
+      (element: props) => element?.options?.id === component.options.id
     );
+    if (index !== -1) {
+      pages[pageNumber].splice(index, 1);
+    } else {
+      pages[pageNumber].forEach((element: props) => {
+        changeComponent(element, component, { delete: true });
+      });
+    }
     setPage([...pages]);
   };
 
   const [menuConfig, setMenuConfig] = useState(
     {} as {
+      pages: any;
       coords: {
         x: number;
         y: number;
@@ -134,12 +180,21 @@ export default function Doc() {
     }
   );
 
+  const addChild = (component: props, newChild: props) => {
+    pages[pageNumber].forEach((element: props) => {
+      changeComponent(element, component, { newChild });
+    });
+    setPage([...pages]);
+  };
+
   return (
     <>
       {menuConfig && (
         <Menu
+          addChild={addChild}
           deleteComponentCB={deleteComponentCB}
           setModalType={setModalType}
+          modalType={modalType}
           setModalData={setModalData}
           {...menuConfig}
         />
