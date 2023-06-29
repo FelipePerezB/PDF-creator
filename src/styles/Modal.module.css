@@ -114,6 +114,19 @@
   gap: 8px;
 }
 
+.card-container{
+  position: relative;
+}
+
+.card:hover{
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.card-container:hover .card-options{
+  display: block;
+}
+
 .card{
   padding: 8px;
   margin: 8px 0;
@@ -121,7 +134,18 @@
   border-radius: 4px;
 }
 
-.a{
+.card-text{
   display: inline-block;
   width: max-content;
 }
+
+.card-options{
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* .delete:hover{
+  display: block;
+} */

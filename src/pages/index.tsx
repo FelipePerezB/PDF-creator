@@ -1,6 +1,8 @@
 import styles from "@/styles/Home.module.css";
 import Doc from "@/containers/Doc";
-import { useEffect } from "react";
+import { ReactElement, useEffect } from "react";
+// import ReactDOM from "react-dom/client";
+import { createRoot } from 'react-dom/client';
 // import html2pdf from "html2pdf.js";
 
 export default function Home() {
@@ -8,25 +10,25 @@ export default function Home() {
     const $doc = document.getElementById("doc");
     const $container = document.querySelector("#doc-container");
     if ($container && $doc) {
-      const pixels = 13
-      const docWidth = 450
-      const ratio = pixels / docWidth
-      let componentWith
+      const pixels = 13;
+      const docWidth = 450;
+      const ratio = pixels / docWidth;
+      let componentWith;
 
-      if($container?.clientWidth <= 425){
-        componentWith = $container?.clientWidth *  .95
-      } else if($container?.clientWidth <= 1024){
-        componentWith = $container?.clientWidth *  0.7
+      if ($container?.clientWidth <= 425) {
+        componentWith = $container?.clientWidth * 0.95;
+      } else if ($container?.clientWidth <= 1024) {
+        componentWith = $container?.clientWidth * 0.7;
       } else {
-        componentWith = 700
+        componentWith = 700;
       }
       //  else if($container?.clientWidth <= 768){
       //   mediaQuery = 0.9
-      // } 
+      // }
 
       // const componentWith = $container?.clientWidth * mediaQuery;
       $doc.style.width = componentWith + "px";
-      $doc.style.fontSize = (componentWith * ratio) + "px";
+      $doc.style.fontSize = componentWith * ratio + "px";
     }
   }, []);
 
@@ -52,13 +54,13 @@ export default function Home() {
       // await pdf.save();
       const $container = document.querySelector("#doc-container");
       if ($container && $doc) {
-        const pixels = 13
-        const docWidth = 450
-        const ratio = pixels / docWidth
-  
+        const pixels = 13;
+        const docWidth = 450;
+        const ratio = pixels / docWidth;
+
         const componentWith = $container?.clientWidth * 0.9;
         $doc.style.width = componentWith + "px";
-        $doc.style.fontSize = (componentWith * ratio) + "px";
+        $doc.style.fontSize = componentWith * ratio + "px";
         $doc.style.gap = "1.4em";
       }
     }

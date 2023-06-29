@@ -1,6 +1,11 @@
 .frame{
   width: 500px;
 }
+
+.component{
+  display: block;
+}
+
 .component:hover{
   cursor: pointer;
   outline: 0.11em solid #5066e8;
@@ -13,11 +18,8 @@
   outline: 0.15em solid #5066e8;
 }
 
-
 .docs{
   display: flex;
   justify-content: center;
   padding: 8px 0;
-
-  /* width: 120vw; */
 }

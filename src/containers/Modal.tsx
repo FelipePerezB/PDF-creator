@@ -39,7 +39,6 @@ export default function Modal({
     const key = Object.keys(data)[0];
     const value = Object.values(data)[0];
     values[key] = value;
-    console.log(values);
     setValues(values);
   };
 

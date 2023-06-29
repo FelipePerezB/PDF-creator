@@ -221,11 +221,18 @@ export default function ModalInput({
       const key = Object.keys(data)[0];
       const value = Object.values(data)[0];
       objectValues[key] = value;
-      setObjectValues(objectValues);
     };
     useEffect(() => {
       createFormData(elements);
     }, [elements]);
+
+    const deleteElement = (props: any[]) => {
+      const index = elements?.findIndex((e) =>
+        props.every((prop: any[]) => prop[1] === e[prop[0]])
+      );
+      elements.splice(index, 1);
+      setElements([...elements]);
+    };
 
     return (
       <div className={styles.subInput}>
@@ -243,16 +250,27 @@ export default function ModalInput({
           {elements?.map((element) => {
             const props = Object.entries(element) as any;
             return (
-              <div key={props[0]} className={styles.card}>
-                {props?.map(([key, value]: string[]) => {
-                  return (
-                    <div key={value + key}>
-                      <span className={styles.a}>
-                        {capFirst(key)}: {value}
-                      </span>
-                    </div>
-                  );
-                })}
+              <div key={props[0]} className={styles["card-container"]}>
+                <div className={styles["card"]}>
+                  {props?.map(([key, value]: string[]) => {
+                    return (
+                      <div key={value + key}>
+                        <span className={styles["card-text"]}>
+                          {capFirst(key)}: {value}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className={styles["card-options"]}>
+                  <span
+                    className={styles.delete}
+                    onClick={() => deleteElement(props)}
+                  >
+                    -
+                  </span>
+                  <span className={styles.delete}>e</span>
+                </div>
               </div>
             );
           })}

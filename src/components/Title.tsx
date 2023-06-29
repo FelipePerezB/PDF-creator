@@ -14,7 +14,7 @@ export default function Title({
   const styles = {
     h1: {
       width: "max-content",
-      fontWeight: "900",
+      fontWeight: "700",
       fontSize: "1.8em",
       textAlign: "center",
       margin: "0.1em",

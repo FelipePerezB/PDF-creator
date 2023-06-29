@@ -10,6 +10,7 @@ import Equality from "@/components/Equality";
 import Fraction from "@/components/Fraction";
 import CustomComponent from "@/components/CustomComponent";
 import DocInfo from "@/components/DocInfo";
+import Question from "@/components/Question";
 
 export const components = {
   div: {
@@ -75,12 +76,7 @@ export const components = {
   exercises: {
     node: (options: any) => <Exercises {...options} />,
     schema: {
-      questions: {
-        type: "subInputsArray",
-        question: "text",
-        alternatives: "text",
-        children: "child",
-      },
+      childrens: "children",
       startsIn: "number",
       isAnEvaluation: "boolean",
     },
@@ -110,6 +106,14 @@ export const components = {
     schema: {
       title: "text",
       subtitle: "text",
+    },
+  },
+  question: {
+    node: (options: any) => <Question {...options} />,
+    schema: {
+      question: "text",
+      alternatives: "text",
+      child: "children",
     },
   },
 } as any;
