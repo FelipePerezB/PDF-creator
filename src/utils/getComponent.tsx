@@ -12,6 +12,7 @@ import CustomComponent from "@/components/CustomComponent";
 import DocInfo from "@/components/DocInfo";
 import Question from "@/components/Question";
 import Page from "@/containers/Page";
+import Document from "@/containers/Document";
 
 export const components = {
   div: {
@@ -119,6 +120,12 @@ export const components = {
   },
   page: {
     node: (options: any) => <Page {...options} />,
+    schema: {
+      childrens: "children",
+    },
+  },
+  doc: {
+    node: (options: any) => <Document {...options} />,
     schema: {
       childrens: "children",
     },

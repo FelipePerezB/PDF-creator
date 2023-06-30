@@ -1,4 +1,4 @@
-import Modal from "@/containers/Modal";
+import NewCompModal from "@/containers/NewCompModal";
 import styles from "../styles/Doc.module.css";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -91,7 +91,7 @@ export default function Menu({
             )}
           </>
         )}
-        <Modal
+        <NewCompModal
           setModalData={setModalData}
           modalState={modalState}
           setModalState={setModalState}

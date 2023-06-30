@@ -1,7 +1,7 @@
 // import { isArray } from "chart.js/dist/helpers/helpers.core";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/Modal.module.css";
-import Modal from "@/containers/Modal";
+import NewCompModal from "@/containers/NewCompModal";
 
 type component = {
   type: string;
@@ -132,7 +132,7 @@ export default function ModalInput({
         <button type="button" className={styles["children-input__add"]}>
           <span onClick={() => setModalState(true)}>Añadir hijo</span>
         </button>
-        <Modal
+        <NewCompModal
           modalState={modalState}
           setModalState={setModalState}
           setModalData={setModalData}
@@ -165,7 +165,7 @@ export default function ModalInput({
         <button type="button" className={styles["children-input__add"]}>
           <span onClick={() => setModalState(true)}>Añadir hijo</span>
         </button>
-        <Modal
+        <NewCompModal
           modalState={modalState}
           setModalState={setModalState}
           setModalData={setModalData}

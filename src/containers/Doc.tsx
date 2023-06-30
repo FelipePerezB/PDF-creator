@@ -5,6 +5,7 @@ import styles from "../styles/Doc.module.css";
 import Menu from "@/components/Menu";
 import getID, { isCID } from "@/utils/getId";
 import changeComponent from "@/utils/chnangeComponent";
+import ConfigButton from "@/components/ConfigButton";
 
 type props = { type: string; options: any };
 
@@ -15,38 +16,30 @@ export default function Doc() {
   );
   const [lastElement, setlastElement] = useState<any>();
   const [componente, setComponent] = useState<any>();
-  const [pages, setPage] = useState([
-    {
-      type: "page",
-      options: {
-        id: "CID812819282",
-        childrens: [
-          {
-            type: "docInfo",
-            options: {
-              id: "CID812889282",
-              title: "SISTEMA DE ECUACIONES",
-              subtitle: "EJE: ALGEBRA",
-            },
+  const [pages, setPage] = useState({
+    type: "doc",
+    options: {
+      id: "CID812919622",
+      childrens: [
+        {
+          type: "page",
+          options: {
+            id: "CID812819282",
+            childrens: [
+              {
+                type: "docInfo",
+                options: {
+                  id: "CID812889282",
+                  title: "SISTEMA DE ECUACIONES",
+                  subtitle: "EJE: ALGEBRA",
+                },
+              },
+            ],
           },
-        ],
-        // title: "SISTEMA DE ECUACIONES",
-      },
+        },
+      ],
     },
-  ] as any[]);
-  // const [pages, setPage] = useState([
-  //   [
-  //     {
-  //       type: "docInfo",
-  //       options: {
-  //         id: "CID812819282",
-  //         title: "SISTEMA DE ECUACIONES",
-  //         subtitle: "EJE: ALGEBRA",
-  //       },
-  //     },
-  //   ],
-  // ] as any[]);
-  const [pageNumber, setPageNumber] = useState(0);
+  } as any);
 
   const getNode = (selection?: HTMLElement): HTMLElement | undefined =>
     selection &&
@@ -73,7 +66,7 @@ export default function Doc() {
     node: HTMLElement
   ): props | undefined => {
     let component;
-    page.find((JSONComponent: props) => {
+    page?.find((JSONComponent: props) => {
       const lowLvlComp = getLowLvlComp(JSONComponent, node.id);
       if (lowLvlComp) {
         component = lowLvlComp;
@@ -87,7 +80,8 @@ export default function Doc() {
     const node = getNode(selection);
     let component: props;
 
-    component = node && (getJSONComponent(pages, node) as any);
+    component =
+      node && (getJSONComponent(pages?.options?.childrens, node) as any);
     setComponent(component);
 
     setMenuConfig({
@@ -106,16 +100,10 @@ export default function Doc() {
       modalType === "edit"
     ) {
       setlastElement(modalData);
-      // if (modalType === "add") {
-      //   pages = [...pages, modalData];
       if (modalType === "edit" && modalData) {
-        pages.forEach((element: props) => {
-          changeComponent(element, modalData);
-        });
+        changeComponent(pages, modalData);
       } else if (modalType === "addChild") {
-        pages.forEach((element: props) => {
-          changeComponent(element, componente, { newChild: modalData });
-        });
+        changeComponent(pages, componente, { newChild: modalData });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,17 +116,8 @@ export default function Doc() {
   };
 
   const deleteComponentCB = (component: JSONComp) => {
-    const index = pages.findIndex(
-      (element: props) => element?.options?.id === component.options.id
-    );
-    if (index !== -1) {
-      pages.splice(index, 1);
-    } else {
-      pages.forEach((element: props) => {
-        changeComponent(element, component, { delete: true });
-      });
-    }
-    setPage([...pages]);
+    changeComponent(pages, component, { delete: true });
+    setPage({ ...pages });
   };
 
   const [menuConfig, setMenuConfig] = useState(
@@ -172,34 +151,8 @@ export default function Doc() {
         />
       )}
       <div className={styles.doc} onClick={getCoords} id="doc">
-        {pages.map(({ type, options }, i) => (
-          <>{getComponent(type, options)}</>
-        ))}
+        {getComponent(pages?.type, pages?.options)}
         <div>
-          <button
-            onClick={() => {
-              setPage([
-                ...pages,
-                {
-                  type: "page",
-                  options: {
-                    id: getID(),
-                    childrens: [],
-                  },
-                },
-              ]);
-            }}
-          >
-            Añadir página
-          </button>
-          <button
-            onClick={() => {
-              pages.pop();
-              setPage([...pages]);
-            }}
-          >
-            Eliminar página
-          </button>
           <button
             onClick={() => {
               localStorage.setItem("Doc", JSON.stringify(pages));
@@ -209,6 +162,7 @@ export default function Doc() {
           </button>
         </div>
       </div>
+      <ConfigButton setComponent={setPage} component={pages} />
     </>
   );
 }
