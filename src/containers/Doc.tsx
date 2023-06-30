@@ -3,7 +3,7 @@ import Page from "./Page";
 import getComponent from "@/utils/getComponent";
 import styles from "../styles/Doc.module.css";
 import Menu from "@/components/Menu";
-import { isCID } from "@/utils/getId";
+import getID, { isCID } from "@/utils/getId";
 import changeComponent from "@/utils/chnangeComponent";
 
 type props = { type: string; options: any };
@@ -16,57 +16,36 @@ export default function Doc() {
   const [lastElement, setlastElement] = useState<any>();
   const [componente, setComponent] = useState<any>();
   const [pages, setPage] = useState([
-    [
-      {
-        type: "docInfo",
-        options: {
-          id: "CID812819282",
-          title: "SISTEMA DE ECUACIONES",
-          subtitle: "EJE: ALGEBRA",
-        },
-      },
-      {
-        type: "columns",
-        options: {
-          id: "CID796888864",
-          childrens: [
-            {
-              type: "SLE",
-              options: {
-                id: "CID742029431",
-                ec1: "2x + 3y = 10",
-                ec2: "2x + 5y = 8",
-              },
+    {
+      type: "page",
+      options: {
+        id: "CID812819282",
+        childrens: [
+          {
+            type: "docInfo",
+            options: {
+              id: "CID812889282",
+              title: "SISTEMA DE ECUACIONES",
+              subtitle: "EJE: ALGEBRA",
             },
-            {
-              type: "div",
-              options: {
-                id: "CID657426618",
-                childrens: [
-                  {
-                    type: "title",
-                    options: {
-                      id: "CID701799743",
-                      text: "AAAA",
-                      size: "h1",
-                    },
-                  },
-                  {
-                    type: "SLE",
-                    options: {
-                      id: "CID164118545",
-                      ec1: "2x + 3y = 10",
-                      ec2: "2x + 5y = 8",
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
+          },
+        ],
+        // title: "SISTEMA DE ECUACIONES",
       },
-    ],
+    },
   ] as any[]);
+  // const [pages, setPage] = useState([
+  //   [
+  //     {
+  //       type: "docInfo",
+  //       options: {
+  //         id: "CID812819282",
+  //         title: "SISTEMA DE ECUACIONES",
+  //         subtitle: "EJE: ALGEBRA",
+  //       },
+  //     },
+  //   ],
+  // ] as any[]);
   const [pageNumber, setPageNumber] = useState(0);
 
   const getNode = (selection?: HTMLElement): HTMLElement | undefined =>
@@ -105,16 +84,10 @@ export default function Doc() {
 
   const getCoords = (event: React.MouseEvent<HTMLDivElement>) => {
     const selection = event?.target as any;
-    if (selection) {
-      const id = selection?.id as string;
-      if (id.startsWith("page-")) {
-        setPageNumber(Number(id.replace("page-", "")));
-      }
-    }
     const node = getNode(selection);
     let component: props;
 
-    component = node && (getJSONComponent(pages[pageNumber], node) as any);
+    component = node && (getJSONComponent(pages, node) as any);
     setComponent(component);
 
     setMenuConfig({
@@ -133,18 +106,17 @@ export default function Doc() {
       modalType === "edit"
     ) {
       setlastElement(modalData);
-      if (modalType === "add") {
-        pages[pageNumber] = [...pages[pageNumber], modalData];
-      } else if (modalType === "edit" && modalData) {
-        pages[pageNumber].forEach((element: props) => {
+      // if (modalType === "add") {
+      //   pages = [...pages, modalData];
+      if (modalType === "edit" && modalData) {
+        pages.forEach((element: props) => {
           changeComponent(element, modalData);
         });
       } else if (modalType === "addChild") {
-        pages[pageNumber].forEach((element: props) => {
+        pages.forEach((element: props) => {
           changeComponent(element, componente, { newChild: modalData });
         });
       }
-      setModalData("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalData, lastElement, modalType]);
@@ -156,13 +128,13 @@ export default function Doc() {
   };
 
   const deleteComponentCB = (component: JSONComp) => {
-    const index = pages[pageNumber].findIndex(
+    const index = pages.findIndex(
       (element: props) => element?.options?.id === component.options.id
     );
     if (index !== -1) {
-      pages[pageNumber].splice(index, 1);
+      pages.splice(index, 1);
     } else {
-      pages[pageNumber].forEach((element: props) => {
+      pages.forEach((element: props) => {
         changeComponent(element, component, { delete: true });
       });
     }
@@ -181,7 +153,7 @@ export default function Doc() {
   );
 
   const addChild = (component: props, newChild: props) => {
-    pages[pageNumber].forEach((element: props) => {
+    pages.forEach((element: props) => {
       changeComponent(element, component, { newChild });
     });
     setPage([...pages]);
@@ -200,19 +172,22 @@ export default function Doc() {
         />
       )}
       <div className={styles.doc} onClick={getCoords} id="doc">
-        {pages.map((page, i) => (
-          <Page index={i} key={"page-" + i}>
-            <>
-              {page?.map(({ type, options }: any) =>
-                getComponent(type, options)
-              )}
-            </>
-          </Page>
+        {pages.map(({ type, options }, i) => (
+          <>{getComponent(type, options)}</>
         ))}
         <div>
           <button
             onClick={() => {
-              setPage([...pages, []]);
+              setPage([
+                ...pages,
+                {
+                  type: "page",
+                  options: {
+                    id: getID(),
+                    childrens: [],
+                  },
+                },
+              ]);
             }}
           >
             Añadir página

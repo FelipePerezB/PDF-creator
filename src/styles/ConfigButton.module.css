@@ -1,0 +1,10 @@
+.config-button{
+  width: 3.5rem;
+  height: 3.5rem;
+  background: white;
+  padding: 8px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}

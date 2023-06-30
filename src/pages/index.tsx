@@ -3,6 +3,7 @@ import Doc from "@/containers/Doc";
 import { ReactElement, useEffect } from "react";
 // import ReactDOM from "react-dom/client";
 import { createRoot } from 'react-dom/client';
+// import ConfigButton from "@/components/ConfigButton";
 // import html2pdf from "html2pdf.js";
 
 export default function Home() {
@@ -74,6 +75,7 @@ export default function Home() {
       <div id="doc-container" className={styles.docs}>
         <Doc />
       </div>
+      {/* <ConfigButton/> */}
     </main>
   );
 }

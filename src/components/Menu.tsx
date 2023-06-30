@@ -17,7 +17,7 @@ export default function Menu({
   modalType: string;
   coords: { x: number; y: number };
   component?: props;
-  setModalData: (data: {}) => void;
+  setModalData: any;
   setModalType: (type: "add" | "edit" | "addChild") => void;
   deleteComponentCB: (component: any) => void;
 }) {
@@ -64,12 +64,12 @@ export default function Menu({
         {coords?.y && coords?.x && menuState && (
           <>
             <p
-              onClick={() => openModal(component ? "edit" : "add")}
+              onClick={() => openModal("edit")}
               id="menu"
               style={style.p}
               className={styles.config}
             >
-              {component ? "Configurar" : "Nuevo elemento"}
+              Configurar
             </p>
             {component && (
               <p

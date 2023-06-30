@@ -11,6 +11,7 @@ import Fraction from "@/components/Fraction";
 import CustomComponent from "@/components/CustomComponent";
 import DocInfo from "@/components/DocInfo";
 import Question from "@/components/Question";
+import Page from "@/containers/Page";
 
 export const components = {
   div: {
@@ -114,6 +115,12 @@ export const components = {
       question: "text",
       alternatives: "text",
       child: "children",
+    },
+  },
+  page: {
+    node: (options: any) => <Page {...options} />,
+    schema: {
+      childrens: "children",
     },
   },
 } as any;

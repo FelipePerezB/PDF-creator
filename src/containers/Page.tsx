@@ -1,22 +1,31 @@
 import React, { ReactElement, ReactNode } from "react";
 import styles from "../styles/reportTemplate.module.css";
 import DocInfo from "@/components/DocInfo";
+import getComponent from "@/utils/getComponent";
+import CustomComponent from "@/components/CustomComponent";
 
 export default function Page({
-  children,
+  id,
+  childrens,
   index,
 }: {
+  id: string;
   index: number;
-  children: ReactElement;
+  childrens: ReactElement[];
 }) {
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column" }}
-      id={"page-" + index}
-      className={styles.page}
-    >
-      {/* {isFirstPage && <DocInfo/>} */}
-      {children}
-    </div>
+    <CustomComponent active={false} id={id} style={{}}>
+      <div
+        // style={{ }}
+        id={"page-" + index}
+        className={styles.page}
+      >
+        {/* {isFirstPage && <DocInfo/>} */}
+        {/* {children} */}
+        {childrens.map(({ type, options }: any) => (
+          <>{getComponent(type, options)}</>
+        ))}
+      </div>
+    </CustomComponent>
   );
 }
