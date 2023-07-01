@@ -1,10 +1,11 @@
 // import { isArray } from "chart.js/dist/helpers/helpers.core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/Modal.module.css";
 import NewCompModal from "@/containers/NewCompModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
+import resize from "@/utils/ResizePDF";
 
 type component = {
   type: string;
@@ -279,13 +280,6 @@ export default function ModalInput({
                     onClick={() => deleteElement(props)}
                     icon={faClose}
                   />
-                  {/* <span
-                    className={styles.delete}
-                    onClick={() => deleteElement(props)}
-                  >
-                    -
-                  </span> */}
-                  {/* <span className={styles.delete}>e</span> */}
                 </div>
               </div>
             );
@@ -299,14 +293,6 @@ export default function ModalInput({
         >
           <span>Añadir</span>
         </Button>
-        {/* <button
-          type="tertiary"
-          onClick={() => {
-            setElements([...elements, { ...objectValues }]);
-          }}
-        >
-          Añadir
-        </button> */}
       </div>
     );
   };
@@ -325,6 +311,18 @@ export default function ModalInput({
     );
   };
 
+  const RangeInput = () => {
+    const resizeContainer = ({ value }: { value: string }) => {
+      resize(Number(value) / 100);
+    };
+    return (
+      <input
+        onChange={({ target }) => resizeContainer(target)}
+        type="range"
+      />
+    );
+  };
+
   const inputTypes: any = {
     text: (props: any) => <StandardInput {...props} />,
     number: (props: any) => <StandardInput {...props} />,
@@ -335,6 +333,7 @@ export default function ModalInput({
     subInputsArray: (props: any) => <SubInputsArray {...props} />,
     child: (props: any) => <ChildInput {...props} />,
     callback: (props: any) => <CallbackInput {...props} />,
+    range: (props: any) => <RangeInput {...props} />,
   };
 
   const getInput = () => {

@@ -129,6 +129,11 @@ export const components = {
     node: (options: any) => <Document {...options} />,
     schema: {
       childrens: "children",
+      resize: {
+        type: "range",
+        text: "Zoom",
+        callback: generatePdf,
+      },
       download: {
         type: "callback",
         text: "Descargar PDF",

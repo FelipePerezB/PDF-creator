@@ -5,9 +5,7 @@ import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClose,
-  faDeleteLeft,
   faGear,
-  faMinus,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -95,7 +93,7 @@ export default function Menu({
                 // style={style.delete}
                 className={styles["delete-btn"]}
               >
-                <FontAwesomeIcon icon={faClose} />
+                <FontAwesomeIcon  className={styles["icon"]} icon={faClose} />
                 {/* <span>Eliminar</span> */}
               </p>
             )}
@@ -106,7 +104,7 @@ export default function Menu({
                 // style={{background: "#5066e8"}}
                 className={styles["add-btn"]}
               >
-                <FontAwesomeIcon icon={faPlus} />
+                <FontAwesomeIcon icon={faPlus}  className={styles["icon"]}/>
                 {/* <span>Añadir</span> */}
               </p>
             )}

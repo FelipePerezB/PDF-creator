@@ -18,7 +18,7 @@
 }
 
 .config-button:hover .config-button__icon{
-  scale: 1.15;
+  scale: 1.18;
   transition: 100ms;
   color: lightgray;
 }
@@ -28,7 +28,3 @@
   width: 75%;
   height: 75%;
 }
-
-/* .config-button__icon:hover{
-  color: lightgray;
-} */
