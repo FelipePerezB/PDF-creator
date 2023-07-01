@@ -287,6 +287,16 @@ export default function ModalInput({
     );
   };
 
+  const CallbackInput = ({
+    callback,
+    text,
+  }: {
+    callback: ()=>any;
+    text: string;
+  }) => {
+    return <button onClick={callback} type="button">{text}</button>;
+  };
+
   const inputTypes: any = {
     text: (props: any) => <StandardInput {...props} />,
     number: (props: any) => <StandardInput {...props} />,
@@ -296,6 +306,7 @@ export default function ModalInput({
     subInputs: (props: any) => <SubInputs {...props} />,
     subInputsArray: (props: any) => <SubInputsArray {...props} />,
     child: (props: any) => <ChildInput {...props} />,
+    callback: (props: any) => <CallbackInput {...props} />,
   };
 
   const getInput = () => {

@@ -150,8 +150,8 @@ export default function Doc() {
           {...menuConfig}
         />
       )}
-      <div className={styles.doc} onClick={getCoords} id="doc">
-        {getComponent(pages?.type, pages?.options)}
+      <div onClick={getCoords}>{getComponent(pages?.type, pages?.options)}</div>
+      {/* <div className={styles.doc} onClick={getCoords} id="doc">
         <div>
           <button
             onClick={() => {
@@ -161,7 +161,7 @@ export default function Doc() {
             Guardar
           </button>
         </div>
-      </div>
+      </div> */}
       <ConfigButton setComponent={setPage} component={pages} />
     </>
   );

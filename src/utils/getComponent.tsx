@@ -13,6 +13,7 @@ import DocInfo from "@/components/DocInfo";
 import Question from "@/components/Question";
 import Page from "@/containers/Page";
 import Document from "@/containers/Document";
+import { generatePdf } from "./generatePDF";
 
 export const components = {
   div: {
@@ -128,6 +129,11 @@ export const components = {
     node: (options: any) => <Document {...options} />,
     schema: {
       childrens: "children",
+      download: {
+        type: "callback",
+        text: "Descargar PDF",
+        callback: generatePdf,
+      },
     },
   },
 } as any;
