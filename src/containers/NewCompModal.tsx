@@ -26,14 +26,16 @@ export default function Modal({
   const [component, setComponent] = useState("");
   const [values, setValues] = useState({} as any);
 
-  const clearForm = () => {
+  useEffect(() => {
     const $selectComponent = document.getElementById(
       "select-component"
     ) as HTMLInputElement;
-    $selectComponent.value = "";
-    setModalState(false);
+    if ($selectComponent) {
+      $selectComponent.value = "";
+    }
+    setComponent("");
     setComponentSchema("");
-  };
+  }, [modalState]);
 
   const addFormData = (data: any) => {
     const key = Object.keys(data)[0];
@@ -61,11 +63,12 @@ export default function Modal({
         },
       });
     });
-    clearForm();
     setModalData(newComponent);
+    setModalState(false);
   };
 
   useEffect(() => {
+    // debugger;
     if (selectedComponent) {
       setCurrentSchema(components[selectedComponent.type]?.schema);
       setComponent(selectedComponent.type);
@@ -83,29 +86,33 @@ export default function Modal({
   if (modalState) {
     return createPortal(
       <>
-        <div onClick={() => setModalState(false)} className={styles.blur}></div>
+        <div onClick={()=>setModalState(false)} className={styles.blur}></div>
         <div className={styles.modal}>
           <div className={styles.container}>
-            <label>
-              <span>Tipo de componente:</span>
-              <input
-                className={styles.select}
-                id="select-component"
-                defaultValue={selectedComponent?.type}
-                onChange={(event) => {
-                  const value = event?.target?.value;
-                  if (componentsNames.includes(value)) setComponent(value);
-                }}
-                list="components"
-              />
-            </label>
-            <datalist id="components">
-              {componentsNames.map((component) => (
-                <option key={component} value={component}>
-                  {component}
-                </option>
-              ))}
-            </datalist>
+            {!selectedComponent && (
+              <>
+                <label>
+                  <span>Tipo de componente:</span>
+                  <input
+                    className={styles.select}
+                    id="select-component"
+                    defaultValue={component}
+                    onChange={(event) => {
+                      const value = event?.target?.value;
+                      if (componentsNames.includes(value)) setComponent(value);
+                    }}
+                    list="components"
+                  />
+                </label>
+                <datalist id="components">
+                  {componentsNames.map((component) => (
+                    <option key={component} value={component}>
+                      {component}
+                    </option>
+                  ))}
+                </datalist>
+              </>
+            )}
             <form className={styles.form}>
               {currentSchema &&
                 Object.entries(currentSchema).map(([name, type], i) => {

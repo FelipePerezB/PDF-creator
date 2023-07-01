@@ -58,6 +58,8 @@ export default function Menu({
     };
   }, [coords]);
 
+  // console.log
+
   if (coords?.x && coords?.y) {
     return createPortal(
       <>
@@ -95,7 +97,7 @@ export default function Menu({
           setModalData={setModalData}
           modalState={modalState}
           setModalState={setModalState}
-          selectedComponent={modalType === "addChild" ? undefined : component}
+          selectedComponent={modalType === "edit" ? component : undefined}
         />
       </>,
       document.querySelector("#modal") as HTMLDivElement

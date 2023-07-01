@@ -14,13 +14,8 @@ export default function ConfigButton({
   const [loaded, setLoaded] = useState<any>();
   const [modalState, setModalState] = useState(false);
 
-  console.log(component);
-
   useEffect(() => {
-    if (modalData) {
-      console.log(modalData)
-      setComponent({ ...modalData });
-    }
+    if (modalData) setComponent({ ...modalData });
   }, [modalData, setComponent]);
 
   useEffect(() => {
