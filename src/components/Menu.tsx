@@ -2,6 +2,14 @@ import NewCompModal from "@/containers/NewCompModal";
 import styles from "../styles/Doc.module.css";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faClose,
+  faDeleteLeft,
+  faGear,
+  faMinus,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 type props = { type: string; options: any };
 
@@ -22,21 +30,21 @@ export default function Menu({
   deleteComponentCB: (component: any) => void;
 }) {
   const style = {
-    p: {
-      position: "absolute",
-      top: coords?.y + "px",
-      left: coords?.x + "px",
-    },
-    delete: {
-      position: "absolute",
-      top: coords?.y + "px",
-      left: coords?.x + 45 + "px",
-    },
-    add: {
-      position: "absolute",
-      top: coords?.y + "px",
-      left: coords?.x + 65 + "px",
-    },
+    // p: {
+    //   // position: "absolute",
+    //   // top: coords?.y + "px",
+    //   // left: coords?.x + "px",
+    // },
+    // delete: {
+    //   position: "absolute",
+    //   top: coords?.y + "px",
+    //   left: coords?.x + 45 + "px",
+    // },
+    // add: {
+    //   position: "absolute",
+    //   top: coords?.y + "px",
+    //   left: coords?.x + 65 + "px",
+    // },
   } as any;
 
   const [modalState, setModalState] = useState(false);
@@ -64,34 +72,45 @@ export default function Menu({
     return createPortal(
       <>
         {coords?.y && coords?.x && menuState && (
-          <>
+          <div
+            style={{ top: coords?.y + "px", left: coords?.x + "px" }}
+            className={styles["menu-btns"]}
+          >
             <p
               onClick={() => openModal("edit")}
               id="menu"
-              style={style.p}
-              className={styles.config}
+              className={styles["config-btn"]}
+              // style={{ background: "black" }}
+              // className={styles.config}
             >
-              Configurar
+              {/* <span> */}
+              <FontAwesomeIcon className={styles["config-btn__icon"]} icon={faGear} />
+              {/* </span> */}
+              {/* <span>Configurar</span> */}
             </p>
             {component && (
               <p
+                // style={{ background: "white" }}
                 onClick={() => deleteComponentCB(component)}
-                style={style.delete}
-                className={styles.config}
+                // style={style.delete}
+                className={styles["delete-btn"]}
               >
-                -
+                <FontAwesomeIcon icon={faClose} />
+                {/* <span>Eliminar</span> */}
               </p>
             )}
             {component?.options?.childrens && (
               <p
+                // style={{ background: "white" }}
                 onClick={() => openModal("addChild")}
-                style={style.add}
-                className={styles.config}
+                // style={{background: "#5066e8"}}
+                className={styles["add-btn"]}
               >
-                +
+                <FontAwesomeIcon icon={faPlus} />
+                {/* <span>Añadir</span> */}
               </p>
             )}
-          </>
+          </div>
         )}
         <NewCompModal
           setModalData={setModalData}

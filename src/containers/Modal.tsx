@@ -4,6 +4,7 @@ import styles from "@/styles/Modal.module.css";
 import ModalInput from "@/components/ModalInput";
 import { createPortal } from "react-dom";
 import getID from "@/utils/getId";
+import Button from "@/components/Button";
 
 type useStateFunc = (data: any) => void;
 export default function Modal({
@@ -120,14 +121,21 @@ export default function Modal({
                   );
                 })}
             </form>
-            <button
+            <Button
+              onClick={() => {
+                createComponent(values);
+              }}
+            >
+              <span>Guardara</span>
+            </Button>
+            {/* <button
               type="button"
               onClick={() => {
                 createComponent(values);
               }}
             >
               Guardar
-            </button>
+            </button> */}
           </div>
         </div>
       </>,

@@ -1,4 +1,4 @@
-.modal{
+.modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
   overflow: hidden;
 }
 
-.container{
+.container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -23,7 +23,7 @@
   overflow: scroll;
 }
 
-.form{
+.form {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -31,25 +31,25 @@
   margin-bottom: 12px;
 }
 
-.list{
+.list {
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding: 0 0 0 8px;
 }
 
-.select{
+.select {
   width: 100%;
   display: inline-block;
   margin: 8px 0;
 }
 
-.child-input{
+.child-input {
   display: flex;
   flex-direction: column;
 }
 
-.child-input__add{
+.child-input__add {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -58,7 +58,7 @@
   font-size: 0.6rem;
 }
 
-.children{
+.children {
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -66,7 +66,7 @@
   padding: 8px 4px 16px;
 }
 
-.child{
+.child {
   height: 2.4rem;
   display: flex;
   justify-content: space-between;
@@ -77,13 +77,23 @@
   background-color: white;
 }
 
-.child:hover{
+.child:hover {
   background-color: lightgray;
   cursor: pointer;
   box-shadow: none;
 }
 
-.subInput{
+.delete-child {
+  transition: 200ms;
+}
+
+.delete-child:hover {
+  transition: 100ms;
+  color: #ff6961;
+  transform: scale(1.5);
+}
+
+.subInput {
   padding: 8px 0 0 12px;
 }
 
@@ -101,12 +111,12 @@
   cursor: pointer;
 }
 
-.form label{
+.form label {
   display: flex;
   flex-direction: column;
 }
 
-.cards{
+.cards {
   width: 100%;
   padding: 4px;
   display: flex;
@@ -114,36 +124,47 @@
   gap: 8px;
 }
 
-.card-container{
+.card-container {
   position: relative;
 }
 
-.card:hover{
+.card:hover {
   background-color: lightgray;
   cursor: pointer;
 }
 
-.card-container:hover .card-options{
+.card-container:hover .card-options {
   display: block;
 }
 
-.card{
+.card {
   padding: 8px;
   margin: 8px 0;
   outline: 1px solid black;
   border-radius: 4px;
 }
 
-.card-text{
+.card-text {
   display: inline-block;
   width: max-content;
 }
 
-.card-options{
+.card-options {
   display: none;
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 8px;
+  top: 10px;
+}
+
+.delete{
+  transition: 200ms;
+}
+
+.delete:hover {
+  cursor: pointer;
+  transition: 100ms;
+  color: #ff6961;
+  transform: scale(1.5);
 }
 
 /* .delete:hover{

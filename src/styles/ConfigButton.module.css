@@ -1,10 +1,34 @@
 .config-button{
-  width: 3.5rem;
-  height: 3.5rem;
-  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.8rem;
+  height: 3.8rem;
+  background: black;
   padding: 8px;
   border-radius: 50%;
   position: fixed;
   bottom: 50px;
   right: 50px;
+  border: none;
 }
+
+.config-button:hover{
+  cursor: pointer;
+}
+
+.config-button:hover .config-button__icon{
+  scale: 1.15;
+  transition: 100ms;
+  color: lightgray;
+}
+
+.config-button__icon{
+  transition: 200ms;
+  width: 75%;
+  height: 75%;
+}
+
+/* .config-button__icon:hover{
+  color: lightgray;
+} */

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "@/styles/ConfigButton.module.css";
 import { createPortal } from "react-dom";
 import NewCompModal from "@/containers/NewCompModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function ConfigButton({
   component,
@@ -25,10 +27,17 @@ export default function ConfigButton({
   if (loaded)
     return createPortal(
       <>
-        <div
+        <button
           className={styles["config-button"]}
           onClick={() => setModalState(true)}
-        ></div>
+        >
+          <FontAwesomeIcon
+            onClick={() => setModalState(true)}
+            color="white"
+            className={styles["config-button__icon"]}
+            icon={faGear}
+          />
+        </button>
         <NewCompModal
           setModalData={setModalData}
           modalState={modalState}

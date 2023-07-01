@@ -4,6 +4,7 @@ import styles from "@/styles/Modal.module.css";
 import ModalInput from "@/components/ModalInput";
 import { createPortal } from "react-dom";
 import getID from "@/utils/getId";
+import Button from "@/components/Button";
 
 type useStateFunc = (data: any) => void;
 export default function Modal({
@@ -86,7 +87,7 @@ export default function Modal({
   if (modalState) {
     return createPortal(
       <>
-        <div onClick={()=>setModalState(false)} className={styles.blur}></div>
+        <div onClick={() => setModalState(false)} className={styles.blur}></div>
         <div className={styles.modal}>
           <div className={styles.container}>
             {!selectedComponent && (
@@ -127,14 +128,22 @@ export default function Modal({
                   );
                 })}
             </form>
-            <button
+            <Button
+              style="primary"
+              onClick={() => {
+                createComponent(values);
+              }}
+            >
+              <span>Save</span>
+            </Button>
+            {/* <button
               type="button"
               onClick={() => {
                 createComponent(values);
               }}
             >
               Guardar
-            </button>
+            </button> */}
           </div>
         </div>
       </>,

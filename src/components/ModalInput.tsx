@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/Modal.module.css";
 import NewCompModal from "@/containers/NewCompModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+import Button from "./Button";
 
 type component = {
   type: string;
@@ -43,7 +46,12 @@ export default function ModalInput({
       <span>{capFirst(type)}</span>
       <span>{options?.id}</span>
       {deleteChildCb && (
-        <span onClick={() => deleteChildCb(options?.id)}>-</span>
+        <FontAwesomeIcon
+          className={styles["delete-child"]}
+          icon={faClose}
+          onClick={() => deleteChildCb(options?.id)}
+        />
+        // <span >-</span>
       )}
     </div>
   );
@@ -129,9 +137,9 @@ export default function ModalInput({
             ))}
           </div>
         )}
-        <button type="button" className={styles["children-input__add"]}>
-          <span onClick={() => setModalState(true)}>Añadir hijo</span>
-        </button>
+        <Button style="secondary" onClick={() => setModalState(true)}>
+          <span>Añadir hijo</span>
+        </Button>
         <NewCompModal
           modalState={modalState}
           setModalState={setModalState}
@@ -162,9 +170,11 @@ export default function ModalInput({
             />
           )}
         </article>
-        <button type="button" className={styles["children-input__add"]}>
-          <span onClick={() => setModalState(true)}>Añadir hijo</span>
-        </button>
+        <Button style="secondary" onClick={() => setModalState(true)}>
+          <span>Añadir hijo</span>
+        </Button>
+        {/* <button type="button" className={styles["children-input__add"]}>
+        </button> */}
         <NewCompModal
           modalState={modalState}
           setModalState={setModalState}
@@ -263,26 +273,40 @@ export default function ModalInput({
                   })}
                 </div>
                 <div className={styles["card-options"]}>
-                  <span
+                  <FontAwesomeIcon
+                    // size="1x"
+                    className={styles.delete}
+                    onClick={() => deleteElement(props)}
+                    icon={faClose}
+                  />
+                  {/* <span
                     className={styles.delete}
                     onClick={() => deleteElement(props)}
                   >
                     -
-                  </span>
-                  <span className={styles.delete}>e</span>
+                  </span> */}
+                  {/* <span className={styles.delete}>e</span> */}
                 </div>
               </div>
             );
           })}
         </div>
-        <button
-          type="button"
+        <Button
+          style="tertiary"
+          onClick={() => {
+            setElements([...elements, { ...objectValues }]);
+          }}
+        >
+          <span>Añadir</span>
+        </Button>
+        {/* <button
+          type="tertiary"
           onClick={() => {
             setElements([...elements, { ...objectValues }]);
           }}
         >
           Añadir
-        </button>
+        </button> */}
       </div>
     );
   };
@@ -291,10 +315,14 @@ export default function ModalInput({
     callback,
     text,
   }: {
-    callback: ()=>any;
+    callback: () => any;
     text: string;
   }) => {
-    return <button onClick={callback} type="button">{text}</button>;
+    return (
+      <Button style="secondary" onClick={callback}>
+        <span>{text}</span>
+      </Button>
+    );
   };
 
   const inputTypes: any = {
