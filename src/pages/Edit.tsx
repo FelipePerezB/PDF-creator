@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Page from "./Page";
-import getComponent from "@/utils/getComponent";
-import styles from "../styles/Doc.module.css";
-import Menu from "@/components/Menu";
-import getID, { isCID } from "@/utils/getId";
-import changeComponent from "@/utils/chnangeComponent";
 import ConfigButton from "@/components/ConfigButton";
+import Menu from "@/components/Menu";
+import changeComponent from "@/utils/chnangeComponent";
+import getComponent from "@/utils/getComponent";
+import { isCID } from "@/utils/getId";
+import React, { useEffect, useState } from "react";
+import styles from "@/styles/Edit.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 
 type props = { type: string; options: any };
 
-export default function Doc({ setDoc }: { setDoc: any }) {
+export default function Edit() {
+  const [doc, setDoc] = useState({} as any);
   const [modalData, setModalData] = useState<any>();
   const [modalType, setModalType] = useState<"add" | "edit" | "" | "addChild">(
     ""
@@ -95,7 +97,7 @@ export default function Doc({ setDoc }: { setDoc: any }) {
   };
 
   useEffect(() => {
-    setDoc(pages);
+    // setDoc(pages);
     if (
       lastElement?.options?.id !== modalData?.options?.id ||
       modalType === "edit"
@@ -138,33 +140,50 @@ export default function Doc({ setDoc }: { setDoc: any }) {
     });
     setPage([...pages]);
   };
-
   return (
     <>
-      {menuConfig && (
-        <Menu
-          addChild={addChild}
-          deleteComponentCB={deleteComponentCB}
-          setModalType={setModalType}
-          modalType={modalType}
-          setModalData={setModalData}
-          {...menuConfig}
-        />
-      )}
-      <div onClick={getCoords}>{getComponent(pages?.type, pages?.options)}</div>
-      {/* <div onClick={getCoords}></div> */}
-      {/* <div className={styles.doc} onClick={getCoords} id="doc">
-        <div>
-          <button
-            onClick={() => {
-              localStorage.setItem("Doc", JSON.stringify(pages));
-            }}
-          >
-            Guardar
-          </button>
+      <header>
+        <nav className={styles.navar}>
+          <ul>
+            <li className={styles["doc-info"]}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+              <span className={styles["doc-name"]}>Sistema de ecuaciones</span>
+            </li>
+
+            <li className={styles.options}>
+              <FontAwesomeIcon
+                size="xl"
+                icon={faSave}
+                onClick={() => {
+                  localStorage.setItem("Doc", JSON.stringify(doc));
+                  console.log(localStorage.getItem("Doc"));
+                }}
+              />
+              <input list={"schemas"} />
+              <datalist id="schemas">
+                <option value={"RiveroPDF@1.0.0"}></option>
+              </datalist>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <div className={styles.separator}></div>
+      <main id="doc-container" className={styles.docs}>
+        {menuConfig && (
+          <Menu
+            addChild={addChild}
+            deleteComponentCB={deleteComponentCB}
+            setModalType={setModalType}
+            modalType={modalType}
+            setModalData={setModalData}
+            {...menuConfig}
+          />
+        )}
+        <div className={"edit"} onClick={getCoords}>
+          {getComponent(pages?.type, pages?.options)}
         </div>
-      </div> */}
-      <ConfigButton setComponent={setPage} component={pages} />
+        <ConfigButton setComponent={setPage} component={pages} />
+      </main>
     </>
   );
 }

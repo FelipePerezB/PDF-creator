@@ -15,8 +15,10 @@ export default function Document({
     resize(0.5);
   }, []);
   return (
-    <div className={styles.doc} id="doc">
-      {childrens?.map(({ type, options }) => getComponent(type, options))}
+    <div id="doc-container" className={styles.docs}>
+      <div className={styles.doc} id="doc">
+        {childrens?.map(({ type, options }) => getComponent(type, options))}
+      </div>
     </div>
   );
 }

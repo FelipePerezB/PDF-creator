@@ -1,5 +1,7 @@
 // import html2pdf from "html2pdf.js";
 
+import resize from "./ResizePDF";
+
 export async function generatePdf() {
   const $doc = document.getElementById("doc");
   if ($doc) {
@@ -24,16 +26,8 @@ export async function generatePdf() {
       .from($doc);
     await pdf.save();
 
-    const $container = document.querySelector("#doc-container");
-    if ($container && $doc) {
-      const pixels = 13;
-      const docWidth = 450;
-      const ratio = pixels / docWidth;
-
-      const componentWith = $container?.clientWidth * 0.9;
-      $doc.style.width = componentWith + "px";
-      $doc.style.fontSize = componentWith * ratio + "px";
+      resize(0.5)
       $doc.style.gap = "1.4em";
-    }
+
   }
 }

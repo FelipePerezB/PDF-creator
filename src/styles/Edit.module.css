@@ -1,32 +1,19 @@
-.frame{
-  width: 500px;
-}
-
-/* .component{
-  display: block;
-  border-radius: 4px;
-}
-
-.component .component:hover{
-  cursor: pointer;
-  outline: 0.15em solid #5066e8;
-}
-.component .component .component:hover{
-  outline: 0.15em dashed #5066e8;
-} */
-
 .docs{
   overflow-x: hidden;
   display: flex;
   justify-content: center;
-  padding: 70px 0 8px;
+  padding: 16px 0;
 }
+
 
 .navar{
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
+}
+.separator{
+  height: 46px;
 }
 
 .navar ul{
@@ -47,11 +34,6 @@
   align-items: center;
   gap: 12px;
 }
-
-/* .doc-name{
-  font-size: 1.1rem;
-  font-weight: 600;
-} */
 
 .options input{
   width: 100px;

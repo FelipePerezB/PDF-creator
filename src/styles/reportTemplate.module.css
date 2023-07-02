@@ -93,9 +93,9 @@
 
 .small-chart, .medium-chart{
     width: 12em;
-    margin: 0 0 4px;
+    margin: 0 0 0.5em;
 }
 
 .small-chart{
-  width: 90px;
+  width: 0.6px;
 }

@@ -12,7 +12,7 @@ export default function CustomComponent({
   active: boolean;
 }) {
   return (
-    <span key={id} className={styles.component} style={style} id={id}>
+    <span key={id} className={"component"} style={style} id={id}>
       {children}
     </span>
   );

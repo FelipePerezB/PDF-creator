@@ -9,3 +9,16 @@ body{
   box-sizing: border-box;
 }
 
+.edit .component{
+  display: block;
+  border-radius: 4px;
+}
+
+.edit .component .component:hover{
+  cursor: pointer;
+  outline: 0.15em solid #5066e8;
+}
+
+.edit .component .component .component:hover{
+  outline: 0.15em dashed #5066e8;
+}
